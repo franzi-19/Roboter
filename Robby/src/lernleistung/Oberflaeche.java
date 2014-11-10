@@ -20,6 +20,7 @@ public class Oberflaeche  extends JFrame{
 	private JTextField textFieldGenerationen;
 	private JTextField textFieldSzenarien;
 	private JTextField textFieldAnzeigeGeneration;
+	private JTextField textFieldMutaionsWahrscheinlichkeit;
 	private SpielfeldAnzeige anzeige;
 	private Evolution evo;
 
@@ -63,6 +64,11 @@ public class Oberflaeche  extends JFrame{
 		this.add(textFieldAnzeigeGeneration);
 		textFieldAnzeigeGeneration.setColumns(10);
 		
+		textFieldMutaionsWahrscheinlichkeit = new JTextField();
+		textFieldMutaionsWahrscheinlichkeit.setBounds(14, 200, 116, 22);
+		this.add(textFieldMutaionsWahrscheinlichkeit);
+		textFieldMutaionsWahrscheinlichkeit.setColumns(10);
+		
 		JLabel Anfangsbevoelkerung = new JLabel("Anfangsbevoelkerung");
 		Anfangsbevoelkerung.setBounds(10, 0, 130, 22);
 		this.add(Anfangsbevoelkerung);
@@ -79,6 +85,10 @@ public class Oberflaeche  extends JFrame{
 		GenerationAnzeige.setBounds(159, 0, 116, 22);
 		this.add(GenerationAnzeige);
 		
+		JLabel MutationsWahrscheinlichkeit = new JLabel("Mutationswahrscheinlichkeit");
+		MutationsWahrscheinlichkeit.setBounds(0, 180, 150, 22);
+		this.add(MutationsWahrscheinlichkeit);
+		
 		JButton start = new JButton("Start");
 		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
@@ -92,23 +102,31 @@ public class Oberflaeche  extends JFrame{
 				 if ( state == JFileChooser.APPROVE_OPTION )
 				 {
 				      File file = fc.getSelectedFile();
-				      evo.setzteFile(file);
-				      evo.evolution(Integer.parseInt(textFieldAnfBevoelkerung.getText()), Integer.parseInt(textFieldGenerationen.getText()), Integer.parseInt(textFieldSzenarien.getText()));
+				      evo.setzeFile(file);
+				      evo.evolution(Integer.parseInt(textFieldAnfBevoelkerung.getText()), Integer.parseInt(textFieldGenerationen.getText()),Integer.parseInt(textFieldSzenarien.getText()), Double.parseDouble(textFieldMutaionsWahrscheinlichkeit.getText()));
 				 }
 			}
 		});
 		start.setBounds(22,300, 100, 30);
 		this.add(start);
 		
-		JButton stopp = new JButton("Stopp");
+		JButton stopp = new JButton("Generationen laden");
 		stopp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				
-				
+				File pref = new File("C:\\Users\\Franziska\\Documents\\Schule\\Informatik\\Lernleistung\\Generationen");
+				if(!pref.exists())
+					pref = null;
+				JFileChooser fc = new JFileChooser(pref);
+				int state = fc.showOpenDialog(null);
+				if ( state == JFileChooser.APPROVE_OPTION )
+				 {
+				      File file = fc.getSelectedFile();
+				      evo.setzeFile(file);
+				 }
 			}
 		});
-		stopp.setBounds(22,350,100, 30);
+		stopp.setBounds(0,350,145, 30);
 		this.add(stopp);
 		
 		JButton weiter = new JButton("weiter");

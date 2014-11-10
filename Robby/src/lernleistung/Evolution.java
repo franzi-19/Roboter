@@ -37,13 +37,13 @@ public class Evolution {
 		return new int[][] {kind1,kind2};
 	}
 	
-	public void mutation(int[] roboter, int prozent)
+	public void mutation(int[] roboter, double prozent) //kleinste Zahl 0.41
 	{
-		int wiederholungen = sammlung.gibLaenge() * (prozent /100);
+		int wiederholungen = (int)(sammlung.gibLaenge() * (prozent /100d));
 		for(int i = 0; i< wiederholungen; i++)
 		{
-			int zufallPlatz = myRandom(0, sammlung.gibLaenge()+1);
-			int zufallGen = myRandom(0, 6);
+			int zufallPlatz = myRandom(0, sammlung.gibLaenge());
+			int zufallGen = myRandom(1, 7);
 			roboter[zufallPlatz] = zufallGen;
 		}
 	}
@@ -59,7 +59,7 @@ public class Evolution {
 		//generationSammlung.add(generation);
 	}
 	
-	public void evolution(int generationGroesse, int generationen, int szenarien)
+	public void evolution(int generationGroesse, int generationen, int szenarien, double prozent)
 	{
 		erstelleGeneration(generationGroesse);
 		lebenSimulieren(generationGroesse, szenarien);
@@ -76,8 +76,11 @@ public class Evolution {
 				partnerListe.remove(besten.get(j));
 				Collections.shuffle(partnerListe); //Partner mischen
 				int[][] kinder = crossover(besten.get(j).gibDNA(), partnerListe.getFirst().gibDNA());
+				mutation(kinder[0], prozent);
+				mutation(kinder[1], prozent);
 				Roboter kind1 = new Roboter(kinder[0]);
 				Roboter kind2 = new Roboter(kinder[1]);
+				
 				neueGeneration.add(kind1);
 				neueGeneration.add(kind2);
 			}
@@ -108,7 +111,7 @@ public class Evolution {
 		//return generationSammlung.get(generation);
 	}
 	
-	public void setzteFile(File file)
+	public void setzeFile(File file)
 	{
 		dateiName = file;
 	}

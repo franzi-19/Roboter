@@ -44,12 +44,12 @@ public class Roboter  implements Comparable<Roboter>{
 		this.aufzeichnen = aufzeichnen;
 	}
 	
-	public static void main(String[] args) 
-	{
-		Roboter robby = new Roboter();
-		robby.ausgabeDNA();
-		robby.leben();
-	}
+//	public static void main(String[] args) 
+//	{
+//		Roboter robby = new Roboter();
+//		robby.ausgabeDNA();
+//		robby.leben();
+//	}
 	
 	public void dreheRechts()
 	{
@@ -319,7 +319,7 @@ public class Roboter  implements Comparable<Roboter>{
 		raum = new Raum();
 		int action = 0;
 		int umgebung = 0;
-		while(action++ <200)  //darf 200 aktionen ausführen
+		while(action++ <300)  //darf 300 aktionen ausführen
 		{
 			umgebung = berechneZustand();
 			fuehreAktionAus(dna[umgebung]);
@@ -341,7 +341,7 @@ public class Roboter  implements Comparable<Roboter>{
 			if(aufzeichnen)
 				System.out.println("dreheRechts");
 		}
-		else if(action == 3)
+		else if(action == 3 || action == 6)
 		{
 			geheEinenSchritt();
 			if(aufzeichnen)
@@ -381,12 +381,12 @@ public class Roboter  implements Comparable<Roboter>{
 				fitness = fitness -1;
 			}
 		}
-		else
-		{
-			umdrehen();
-			if(aufzeichnen)
-				System.out.println("umgedreht");
-		}
+//		else
+//		{
+//			umdrehen();
+//			if(aufzeichnen)
+//				System.out.println("umgedreht");
+//		}
 	}
 	
 	public int gibFitness()
@@ -418,7 +418,7 @@ public class Roboter  implements Comparable<Roboter>{
 	{
 		return bild;
 	}
-	
+	// low inklusiv, high exklusiv
 	public static int myRandom(int low, int high) {
 		return (int) (Math.random() * (high - low) + low);
 	}
