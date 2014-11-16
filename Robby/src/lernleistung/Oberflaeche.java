@@ -4,11 +4,14 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.LinkedList;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
@@ -20,7 +23,7 @@ public class Oberflaeche  extends JFrame{
 	private JTextField textFieldGenerationen;
 	private JTextField textFieldSzenarien;
 	private JTextField textFieldAnzeigeGeneration;
-	private JTextField textFieldMutaionsWahrscheinlichkeit;
+	private JTextField textFieldMutationsWahrscheinlichkeit;
 	private SpielfeldAnzeige anzeige;
 	private Evolution evo;
 
@@ -64,10 +67,10 @@ public class Oberflaeche  extends JFrame{
 		this.add(textFieldAnzeigeGeneration);
 		textFieldAnzeigeGeneration.setColumns(10);
 		
-		textFieldMutaionsWahrscheinlichkeit = new JTextField();
-		textFieldMutaionsWahrscheinlichkeit.setBounds(14, 200, 116, 22);
-		this.add(textFieldMutaionsWahrscheinlichkeit);
-		textFieldMutaionsWahrscheinlichkeit.setColumns(10);
+		textFieldMutationsWahrscheinlichkeit = new JTextField();
+		textFieldMutationsWahrscheinlichkeit.setBounds(14, 200, 116, 22);
+		this.add(textFieldMutationsWahrscheinlichkeit);
+		textFieldMutationsWahrscheinlichkeit.setColumns(10);
 		
 		JLabel Anfangsbevoelkerung = new JLabel("Anfangsbevoelkerung");
 		Anfangsbevoelkerung.setBounds(10, 0, 130, 22);
@@ -93,20 +96,27 @@ public class Oberflaeche  extends JFrame{
 		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				File pref = new File("C:\\Users\\Franziska\\Documents\\Schule\\Informatik\\Lernleistung\\Generationen");
-				if(!pref.exists())
-					pref = null;
-				JFileChooser fc = new JFileChooser(pref);
+				String anfBev = textFieldAnfBevoelkerung.getText();
+				String gen = textFieldGenerationen.getText();
+				String szen = textFieldSzenarien.getText();
+				String mut = textFieldMutationsWahrscheinlichkeit.getText();
+				String datei = "Bev " + anfBev + ", Gen " + gen + ", Szen " + szen + ", Mut " + mut + ".txt";
+				File pref = new File("C:\\Users\\Franziska\\Documents\\Schule\\Informatik\\Lernleistung\\Generationen\\Daten\\"+datei);
+//				if(!pref.exists())
+//					pref = null;
+				JFileChooser fc = new JFileChooser();
+				fc.setSelectedFile(pref);
 				
 				int state = fc.showSaveDialog(null);
 				 if ( state == JFileChooser.APPROVE_OPTION )
 				 {
 				      File file = fc.getSelectedFile();
 				      evo.setzeFile(file);
-				      evo.evolution(Integer.parseInt(textFieldAnfBevoelkerung.getText()), Integer.parseInt(textFieldGenerationen.getText()),Integer.parseInt(textFieldSzenarien.getText()), Double.parseDouble(textFieldMutaionsWahrscheinlichkeit.getText()));
+				      evo.evolution(Integer.parseInt(textFieldAnfBevoelkerung.getText()), Integer.parseInt(textFieldGenerationen.getText()),Integer.parseInt(textFieldSzenarien.getText()), Double.parseDouble(textFieldMutationsWahrscheinlichkeit.getText()));
 				 }
 			}
 		});
+		
 		start.setBounds(22,300, 100, 30);
 		this.add(start);
 		
@@ -114,7 +124,7 @@ public class Oberflaeche  extends JFrame{
 		stopp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				File pref = new File("C:\\Users\\Franziska\\Documents\\Schule\\Informatik\\Lernleistung\\Generationen");
+				File pref = new File("C:\\Users\\Franziska\\Documents\\Schule\\Informatik\\Lernleistung\\Generationen\\Daten");
 				if(!pref.exists())
 					pref = null;
 				JFileChooser fc = new JFileChooser(pref);
@@ -122,6 +132,22 @@ public class Oberflaeche  extends JFrame{
 				if ( state == JFileChooser.APPROVE_OPTION )
 				 {
 				      File file = fc.getSelectedFile();
+				      String datei = file.getName();
+				      datei = datei.replaceAll("\\..*| ", ""); //Löscht alle Punkte und Zeichen dahinter und alle Leerzeichen
+				      String[] props = datei.split(",");
+				      for(String p : props)
+				      {
+				    	  String number = p.replaceAll("\\D", ""); //Löscht alle Buchstaben
+				    	  String text = p.replaceAll("\\d", ""); //Löscht alle Ziffern
+				    	  switch(text){
+				    	  case "Bev": textFieldAnfBevoelkerung.setText(number); break;
+				    	  case "Gen": textFieldGenerationen.setText(number); break;
+				    	  case "Szen": textFieldSzenarien.setText(number); break;
+				    	  case "Mut": textFieldMutationsWahrscheinlichkeit.setText(number); break;
+				    	  default: System.out.println("Kann nicht erkennen: " + text);
+				    	  }
+				      }
+				      System.out.println(datei);
 				      evo.setzeFile(file);
 				 }
 			}
@@ -144,8 +170,16 @@ public class Oberflaeche  extends JFrame{
 		anzeigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				Roboter rob = evo.gibGeneration(Integer.parseInt(textFieldAnzeigeGeneration.getText())).getFirst();
-				anzeige.setzeRoboter(rob);
+				LinkedList<Roboter> gen = evo.gibGeneration(Integer.parseInt(textFieldAnzeigeGeneration.getText()));
+				if(gen == null)
+				{
+					JOptionPane.showMessageDialog(null, "Generation nicht vorhanden");
+				}
+				else
+				{
+					Roboter rob = gen.getFirst();
+					anzeige.setzeRoboter(rob);
+				}
 			}
 		});
 		anzeigen.setBounds(170,300, 100, 30);

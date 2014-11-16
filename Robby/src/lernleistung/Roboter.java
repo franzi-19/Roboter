@@ -1,7 +1,9 @@
 package lernleistung;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 import java.util.Stack;
 
@@ -306,7 +308,7 @@ public class Roboter  implements Comparable<Roboter>{
 		System.out.println(ueberpruefung);
 	}
 	
-	public void leben() //1=links drehen; 2=rechts drehen; 3=einen Schritt; 4=zufällig gehen; 5=müll aufheben, 6= sich umdrehen
+	public void leben() //1=links drehen; 2=rechts drehen; 3/6=einen Schritt; 4=zufällig gehen; 5=müll aufheben
 	{
 		zaehler++;
 		if(aufzeichnen)
@@ -314,6 +316,13 @@ public class Roboter  implements Comparable<Roboter>{
 			bild = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
 			stift = bild.createGraphics();
 			stift.setColor(Color.BLACK);
+			
+			Stroke old = stift.getStroke();
+			stift.setStroke(new BasicStroke(3));
+			int x = standort.getXKon()*50, y = standort.getYKon()*50;
+			stift.drawLine(x+5, y+5, x+45, y+45);
+			stift.drawLine(x+45, y+5, x+5, y+45);
+			stift.setStroke(old);
 		}
 		fitness = 0;
 		raum = new Raum();
@@ -322,6 +331,7 @@ public class Roboter  implements Comparable<Roboter>{
 		while(action++ <300)  //darf 300 aktionen ausführen
 		{
 			umgebung = berechneZustand();
+//			System.out.println("Umgebung: " + umgebung);
 			fuehreAktionAus(dna[umgebung]);
 		}
 		gesamtFitness = gesamtFitness + gibFitness();
@@ -333,13 +343,16 @@ public class Roboter  implements Comparable<Roboter>{
 		{
 			dreheLinks();
 			if(aufzeichnen)
-				System.out.println("dreheLinks");
+				System.out.println("gehe links");
+			geheEinenSchritt();
 		}
 		else if(action == 2)
 		{
 			dreheRechts();
 			if(aufzeichnen)
-				System.out.println("dreheRechts");
+				System.out.println("gehe rechts");
+			geheEinenSchritt();
+
 		}
 		else if(action == 3 || action == 6)
 		{

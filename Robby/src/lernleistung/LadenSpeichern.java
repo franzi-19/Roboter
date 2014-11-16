@@ -144,6 +144,11 @@ public class LadenSpeichern {
 				reader.readLine();
 			
 			String gen = reader.readLine();
+			if(gen ==  null)
+			{
+				reader.close();
+				return null;
+			}
 //			gen = gen.substring(2,gen.length()-2);
 			String[] DNAstrings = gen.split(";");
 			

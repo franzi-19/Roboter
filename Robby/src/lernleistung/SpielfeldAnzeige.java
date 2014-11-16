@@ -2,6 +2,7 @@ package lernleistung;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -10,7 +11,7 @@ public class SpielfeldAnzeige extends JPanel{
 	
 	private static final long serialVersionUID = 1L; //Versionsnummerierung 
 	private Roboter rob;
-
+	
 	public SpielfeldAnzeige()
 	{
 

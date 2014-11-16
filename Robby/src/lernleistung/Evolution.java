@@ -19,11 +19,6 @@ public class Evolution {
 		//generationSammlung = new LinkedList<LinkedList<Roboter>>(); 
 	}
 	
-	public static void main(String[] args) 
-	{
-		//Evolution evo = new Evolution();
-		//evo.evolution(200, 50, 100);
-	}
 	
 	public int[][] crossover(int[] frau, int[] mann)
 	{
@@ -37,14 +32,23 @@ public class Evolution {
 		return new int[][] {kind1,kind2};
 	}
 	
-	public void mutation(int[] roboter, double prozent) //kleinste Zahl 0.41
+	public void mutation(int[] dna, double prozent) //kleinste Zahl 0.41
 	{
-		int wiederholungen = (int)(sammlung.gibLaenge() * (prozent /100d));
-		for(int i = 0; i< wiederholungen; i++)
+//		int wiederholungen = (int)(sammlung.gibLaenge() * (prozent /100d));
+//		for(int i = 0; i< wiederholungen; i++)
+//		{
+//			int zufallPlatz = myRandom(0, sammlung.gibLaenge());
+//			int zufallGen = myRandom(1, 7);
+//			roboter[zufallPlatz] = zufallGen;
+//		}
+		
+		double wahrscheinlichkeit = prozent / 100d;
+		for(int i = 0; i < dna.length; i++)
 		{
-			int zufallPlatz = myRandom(0, sammlung.gibLaenge());
-			int zufallGen = myRandom(1, 7);
-			roboter[zufallPlatz] = zufallGen;
+			if(Math.random() < wahrscheinlichkeit)
+			{
+				dna[i] = myRandom(1, 7);
+			}
 		}
 	}
 	
