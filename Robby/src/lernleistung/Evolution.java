@@ -10,13 +10,16 @@ public class Evolution {
 	public Zustandssammlung sammlung;
 	public LinkedList<Roboter> generation;
 	//public LinkedList<LinkedList<Roboter>> generationSammlung;
-	File dateiName;
+	File dateiName, statistikDatei;
+	boolean schreibeStatistik;
 	//        + JFileChoose benutzen  Videos? SkypeLink 19.22.4
+	
 	
 	public Evolution()
 	{
 		sammlung = new Zustandssammlung();
 		//generationSammlung = new LinkedList<LinkedList<Roboter>>(); 
+		
 	}
 	
 	
@@ -65,6 +68,8 @@ public class Evolution {
 	
 	public void evolution(int generationGroesse, int generationen, int szenarien, double prozent)
 	{
+		if(schreibeStatistik)
+			LadenSpeichern.schreibenEinstellung(generationGroesse, generationen, szenarien, prozent, statistikDatei);
 		erstelleGeneration(generationGroesse);
 		lebenSimulieren(generationGroesse, szenarien);
 		System.out.println("Anfang");
@@ -95,6 +100,8 @@ public class Evolution {
 		lebenSimulieren(generationGroesse, szenarien);
 		System.out.println("Ende");
 		generationAusgeben();
+		if(schreibeStatistik)
+			LadenSpeichern.speichernStatistik(generation, statistikDatei);
 	}
 
 	private void lebenSimulieren(int generationGroesse, int szenarien) {
@@ -118,6 +125,12 @@ public class Evolution {
 	public void setzeFile(File file)
 	{
 		dateiName = file;
+	}
+	
+	public void setzeStatistik(File file)
+	{
+		statistikDatei = file;
+		schreibeStatistik = true;
 	}
 	
 	public void generationAusgeben(){

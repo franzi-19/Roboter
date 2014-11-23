@@ -16,63 +16,6 @@ public class LadenSpeichern {
 	static ObjectOutputStream output;
 	static File lastFile;
 	
-	
-//	public static void speichern(LinkedList<int[]> generationDNA, File dateiName)
-//	{
-//		OutputStream fos = null;
-//		try 
-//		{
-//			if(lastFile == null || !lastFile.equals(dateiName)){
-//				lastFile = dateiName;
-//			}
-//			fos = null;
-//			ObjectOutputStream o = null;
-//			if(dateiName.exists())
-//			{
-//				fos = new FileOutputStream(dateiName);
-//				o = new AppendingObjectOutputStream(fos);
-//			}
-//			else
-//			{
-//				System.out.println("Using normal stream");
-//				fos = new FileOutputStream(dateiName,true);
-//				o = new ObjectOutputStream( fos );
-//			}
-//			o.writeObject(generationDNA);	
-//			o.close();
-//		} 
-//		catch (IOException e) 
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		finally { try { fos.close(); } catch ( Exception e ) { e.printStackTrace(); } }
-//	}
-	
-//	@SuppressWarnings("unchecked")
-//	public static LinkedList<Roboter> laden(File dateiName, int index)
-//	{
-//		InputStream fis = null;
-//
-//		try
-//		{
-//		  fis = new FileInputStream( dateiName );
-//		  ObjectInputStream o = new ObjectInputStream( fis );
-//		  for(int i = 0; i<index; i++)
-//		  {
-//			  o.readObject();
-//		  }
-//		  LinkedList<int[]> dna = (LinkedList<int[]>) o.readObject();
-//		  return DNAinGeneration(dna);
-//		}
-//		catch ( IOException | ClassNotFoundException e ) 
-//		{ 
-//			System.err.println( e ); 
-//			}
-//		finally { try { fis.close(); } catch ( Exception e ) { } }
-//		return null;
-//	}
-	
 	public static LinkedList<int[]> generationInDNA(LinkedList<Roboter> roboter)
 	{
 		LinkedList<int[]> DNA = new LinkedList<int[]>();
@@ -175,5 +118,65 @@ public class LadenSpeichern {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static void erstelleStatistikDatei(File file)
+	{
+		try
+		{
+			FileOutputStream fos = new FileOutputStream(file,true);
+			OutputStreamWriter osw = new OutputStreamWriter(fos,"utf-8");
+			BufferedWriter writer = new BufferedWriter(osw);
+			writer.write("Anfangsbevoelkerung;Generationen;Szenarien;Mutationsrate;DurchschnittsFittness");
+			writer.newLine();
+			writer.close();
+			fos.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public static void schreibenEinstellung(int anfang, int generation, int szenarien, double rate, File file)
+	{
+		try
+		{
+			FileOutputStream fos = new FileOutputStream(file,true);
+			OutputStreamWriter osw = new OutputStreamWriter(fos,"utf-8");
+			BufferedWriter writer = new BufferedWriter(osw);
+			writer.write(anfang + ";" + generation+ ";" + szenarien + ";" + rate + ";");
+			writer.close();
+			fos.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public static void speichernStatistik(LinkedList<Roboter> generation, File file)
+	{
+		int summe = 0;
+		int i = 0;
+		for( ;i<generation.size() && i<20; i++)
+		{
+			summe = summe + generation.get(i).gibFitness();
+		}
+		double durchschnitt = summe /i;
+		try
+		{
+			FileOutputStream fos = new FileOutputStream(file,true);
+			OutputStreamWriter osw = new OutputStreamWriter(fos,"utf-8");
+			BufferedWriter writer = new BufferedWriter(osw);
+			writer.write(Double.toString(durchschnitt));
+			writer.newLine();
+			writer.close();
+			fos.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

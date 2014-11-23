@@ -5,9 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.LinkedList;
-import java.util.regex.Pattern;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,6 +24,7 @@ public class Oberflaeche  extends JFrame{
 	private JTextField textFieldSzenarien;
 	private JTextField textFieldAnzeigeGeneration;
 	private JTextField textFieldMutationsWahrscheinlichkeit;
+	private JCheckBox statistikCheck;
 	private SpielfeldAnzeige anzeige;
 	private Evolution evo;
 
@@ -72,6 +73,10 @@ public class Oberflaeche  extends JFrame{
 		this.add(textFieldMutationsWahrscheinlichkeit);
 		textFieldMutationsWahrscheinlichkeit.setColumns(10);
 		
+		statistikCheck = new JCheckBox("Statistik",true); //Für Abgabe true-> false
+		statistikCheck.setBounds(14, 225, 116, 22);
+		this.add(statistikCheck); //Für Abgabe entfernen
+		
 		JLabel Anfangsbevoelkerung = new JLabel("Anfangsbevoelkerung");
 		Anfangsbevoelkerung.setBounds(10, 0, 130, 22);
 		this.add(Anfangsbevoelkerung);
@@ -110,8 +115,21 @@ public class Oberflaeche  extends JFrame{
 				int state = fc.showSaveDialog(null);
 				 if ( state == JFileChooser.APPROVE_OPTION )
 				 {
+					 evo = new Evolution();
 				      File file = fc.getSelectedFile();
 				      evo.setzeFile(file);
+				      //Für Statistik
+				      if(statistikCheck.isSelected())
+				      {
+				    	  String verzeichnis = file.getParent();
+				    	  verzeichnis = verzeichnis + "\\Statistik.txt";
+				    	  File statistikFile = new File(verzeichnis);
+				    	  if(!statistikFile.exists())
+				    	  {
+				    		  LadenSpeichern.erstelleStatistikDatei(statistikFile);
+				    	  }
+				    	  evo.setzeStatistik(statistikFile);
+				      }
 				      evo.evolution(Integer.parseInt(textFieldAnfBevoelkerung.getText()), Integer.parseInt(textFieldGenerationen.getText()),Integer.parseInt(textFieldSzenarien.getText()), Double.parseDouble(textFieldMutationsWahrscheinlichkeit.getText()));
 				 }
 			}
