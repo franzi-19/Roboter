@@ -2,7 +2,6 @@ package lernleistung;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
