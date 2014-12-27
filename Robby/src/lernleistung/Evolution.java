@@ -7,6 +7,8 @@ import java.util.List;
 
 public class Evolution {
 	
+	public static boolean AUSGABE = false;
+	
 	public Zustandssammlung sammlung;
 	public LinkedList<Roboter> generation;
 	//public LinkedList<LinkedList<Roboter>> generationSammlung;
@@ -72,8 +74,10 @@ public class Evolution {
 			LadenSpeichern.schreibenEinstellung(generationGroesse, generationen, szenarien, prozent, statistikDatei);
 		erstelleGeneration(generationGroesse);
 		lebenSimulieren(generationGroesse, szenarien);
-		System.out.println("Anfang");
-		generationAusgeben();
+		if(AUSGABE){
+			System.out.println("Anfang");
+			generationAusgeben();
+		}
 		for(int i = 0; i < generationen; i++)
 		{
 			lebenSimulieren(generationGroesse, szenarien);
@@ -98,8 +102,10 @@ public class Evolution {
 			//generationSammlung.add(neueGeneration);
 		}
 		lebenSimulieren(generationGroesse, szenarien);
-		System.out.println("Ende");
-		generationAusgeben();
+		if(AUSGABE){
+			System.out.println("Ende");
+			generationAusgeben();
+		}
 		if(schreibeStatistik)
 			LadenSpeichern.speichernStatistik(generation, statistikDatei);
 	}
