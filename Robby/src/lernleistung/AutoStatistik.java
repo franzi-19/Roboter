@@ -14,7 +14,7 @@ import java.util.Random;
 public class AutoStatistik {
 	private static final File statistikFile = new File("C:\\Users\\Franziska\\Documents\\Schule\\Informatik\\Lernleistung\\Generationen\\Automatik\\tabelle.txt");
 	private static final String evoDir = "C:\\Users\\Franziska\\Documents\\Schule\\Informatik\\Lernleistung\\Generationen\\Automatik\\";
-	private static final int anzahlEvos=1;
+	private static final int anzahlEvos=10;
 	
 	private static final int minGenSz=100, maxGenSz=500; //Generationsgroesse
 	private static final double minMut=0.1d,maxMut=3d; //Mutationsrate
