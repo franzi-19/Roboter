@@ -32,6 +32,8 @@ public class AutoStatistik {
 			e.printStackTrace(System.out);
 		}
 		
+		String[] bla = {};
+		
 		if(!statistikFile.exists())
   	  	{
   		  LadenSpeichern.erstelleStatistikDatei(statistikFile);
@@ -46,8 +48,8 @@ public class AutoStatistik {
 			int genSz = r.nextInt((maxGenSz - minGenSz) / 2) * 2 + minGenSz;
 			int gen = r.nextInt(maxGen - minGen) + minGen;
 			int szen = r.nextInt(maxSzen - minSzen) + minSzen;
-			System.out.print("Nr. " + i + ", GenSize " + genSz + ", Gens " + gen + ", Szens " + szen + ", Mut " + mut +"...");
-			evo.evolution(genSz, gen, szen, mut);
+			System.out.print("Nr. " + i + ", GenSize " + genSz + ", Gens " + gen + ", Szens " + szen + ", Mut " + mut +"...");			evo.evolution(genSz, gen, szen, mut);
+			
 			System.out.println(" Finished.");
 		}
 		

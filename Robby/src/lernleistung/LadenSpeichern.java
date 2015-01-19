@@ -127,7 +127,7 @@ public class LadenSpeichern {
 			FileOutputStream fos = new FileOutputStream(file,true);
 			OutputStreamWriter osw = new OutputStreamWriter(fos,"utf-8");
 			BufferedWriter writer = new BufferedWriter(osw);
-			writer.write("Anfangsbevoelkerung;Generationen;Szenarien;Mutationsrate;DurchschnittsFittness");
+			writer.write("Anfangsbevoelkerung;Generationen;Szenarien;Mutationsrate;DurchschnittsFittness;Zeit");
 			writer.newLine();
 			writer.close();
 			fos.close();
@@ -155,7 +155,7 @@ public class LadenSpeichern {
 		}
 	}
 	
-	public static void speichernStatistik(LinkedList<Roboter> generation, File file)
+	public static void speichernStatistik(LinkedList<Roboter> generation,long delta, File file)
 	{
 		int summe = 0;
 		int i = 0;
@@ -170,6 +170,7 @@ public class LadenSpeichern {
 			OutputStreamWriter osw = new OutputStreamWriter(fos,"utf-8");
 			BufferedWriter writer = new BufferedWriter(osw);
 			writer.write(Double.toString(durchschnitt));
+			writer.write(";" + Long.toString(delta));
 			writer.newLine();
 			writer.close();
 			fos.close();

@@ -2,6 +2,7 @@ package lernleistung;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -72,6 +73,7 @@ public class Evolution {
 	{
 		if(schreibeStatistik)
 			LadenSpeichern.schreibenEinstellung(generationGroesse, generationen, szenarien, prozent, statistikDatei);
+		long begin = new Date().getTime();
 		erstelleGeneration(generationGroesse);
 		lebenSimulieren(generationGroesse, szenarien);
 		if(AUSGABE){
@@ -106,8 +108,10 @@ public class Evolution {
 			System.out.println("Ende");
 			generationAusgeben();
 		}
-		if(schreibeStatistik)
-			LadenSpeichern.speichernStatistik(generation, statistikDatei);
+		if(schreibeStatistik){
+			long delta = new Date().getTime() - begin;
+			LadenSpeichern.speichernStatistik(generation,delta, statistikDatei);
+		}
 	}
 
 	private void lebenSimulieren(int generationGroesse, int szenarien) {
