@@ -9,6 +9,7 @@ import java.util.List;
 public class Evolution {
 	
 	public static boolean AUSGABE = false;
+	public static boolean FITNESSAUSGABE = true;
 	
 	public Zustandssammlung sammlung;
 	public LinkedList<Roboter> generation;
@@ -16,6 +17,7 @@ public class Evolution {
 	File dateiName, statistikDatei;
 	boolean schreibeStatistik;
 	//        + JFileChoose benutzen  Videos? SkypeLink 19.22.4
+	
 	
 	
 	public Evolution()
@@ -83,6 +85,17 @@ public class Evolution {
 		for(int i = 0; i < generationen; i++)
 		{
 			lebenSimulieren(generationGroesse, szenarien);
+			if(FITNESSAUSGABE)
+			{
+//				int zaehler = 0;
+//				for(int z = 0; z < generation.size()/2; z++)
+//				{
+//					zaehler = zaehler + generation.get(z).gibFitness();
+//				}
+//				System.out.println(zaehler/(generation.size()/2));
+				
+				System.out.println(generation.getFirst().gibFitness());
+			}
 			LinkedList<Roboter> neueGeneration = new LinkedList<Roboter>();
 			List<Roboter> besten = generation.subList(0, generation.size()/2);
 			for(int j = 0; j < besten.size(); j++)

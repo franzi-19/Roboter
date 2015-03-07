@@ -13,9 +13,15 @@ public class Raum {
 	
 	public static void main(String[] args) 
 	{
-		Raum raum = new Raum();
-		raum.verteileMuell();
-		raum.ausgabe();
+		int[] verteilung = new int[101];
+		for(int i = 0; i < 1000000; i++)
+		{
+			Raum raum = new Raum();
+			verteilung[raum.zaehleMuell()]++;
+		}
+		
+		for(int v = 0; v< verteilung.length;v++)
+			System.out.println(v + ";" + verteilung[v]);
 	}
 	
 	public void verteileMuell()
@@ -28,6 +34,22 @@ public class Raum {
 				koordinaten[i][j] = zufall;
 			}
 		}
+	}
+	
+	public int zaehleMuell()
+	{
+		int zahl = 0;
+
+		for(int i = 0; i < 10; i ++)
+		{
+			for(int j = 0; j < 10; j ++)
+			{
+				if(this.istMuell(new Punkt(i,j)))
+					zahl++;
+			}
+		}
+		
+		return zahl;
 	}
 	
 	public boolean istMuell(Punkt punkt)
