@@ -24,7 +24,6 @@ public class Oberflaeche  extends JFrame{
 	private JTextField textFieldSzenarien;
 	private JTextField textFieldAnzeigeGeneration;
 	private JTextField textFieldMutationsWahrscheinlichkeit;
-	private JCheckBox statistikCheck;
 	private SpielfeldAnzeige anzeige;
 	private Evolution evo;
 
@@ -46,7 +45,7 @@ public class Oberflaeche  extends JFrame{
 		ob.setVisible(true);
 	}
 	
-	private void createComponents()  //knopf und textfeld um eine generation zu bekommen
+	private void createComponents()  
 	{
 		textFieldAnfBevoelkerung = new JTextField();
 		textFieldAnfBevoelkerung.setBounds(14, 20, 116, 22);
@@ -72,10 +71,6 @@ public class Oberflaeche  extends JFrame{
 		textFieldMutationsWahrscheinlichkeit.setBounds(14, 200, 116, 22);
 		this.add(textFieldMutationsWahrscheinlichkeit);
 		textFieldMutationsWahrscheinlichkeit.setColumns(10);
-		
-		statistikCheck = new JCheckBox("Statistik",true); //Für Abgabe true-> false
-		statistikCheck.setBounds(14, 225, 116, 22);
-		this.add(statistikCheck); //Für Abgabe entfernen
 		
 		JLabel Anfangsbevoelkerung = new JLabel("Anfangsbevoelkerung");
 		Anfangsbevoelkerung.setBounds(10, 0, 130, 22);
@@ -107,8 +102,6 @@ public class Oberflaeche  extends JFrame{
 				String mut = textFieldMutationsWahrscheinlichkeit.getText();
 				String datei = "Bev " + anfBev + ", Gen " + gen + ", Szen " + szen + ", Mut " + mut + ".txt";
 				File pref = new File("C:\\Users\\Franziska\\Documents\\Schule\\Informatik\\Lernleistung\\Generationen\\Daten\\"+datei);
-//				if(!pref.exists())
-//					pref = null;
 				JFileChooser fc = new JFileChooser();
 				fc.setSelectedFile(pref);
 				
@@ -118,18 +111,6 @@ public class Oberflaeche  extends JFrame{
 					 evo = new Evolution();
 				      File file = fc.getSelectedFile();
 				      evo.setzeFile(file);
-				      //Für Statistik
-				      if(statistikCheck.isSelected())
-				      {
-				    	  String verzeichnis = file.getParent();
-				    	  verzeichnis = verzeichnis + "\\Statistik.txt";
-				    	  File statistikFile = new File(verzeichnis);
-				    	  if(!statistikFile.exists())
-				    	  {
-				    		  LadenSpeichern.erstelleStatistikDatei(statistikFile);
-				    	  }
-				    	  evo.setzeStatistik(statistikFile);
-				      }
 				      evo.evolution(Integer.parseInt(textFieldAnfBevoelkerung.getText()), Integer.parseInt(textFieldGenerationen.getText()),Integer.parseInt(textFieldSzenarien.getText()), Double.parseDouble(textFieldMutationsWahrscheinlichkeit.getText()));
 				 }
 			}
@@ -173,16 +154,6 @@ public class Oberflaeche  extends JFrame{
 		stopp.setBounds(0,350,145, 30);
 		this.add(stopp);
 		
-		JButton weiter = new JButton("weiter");
-		weiter.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) 
-			{
-				
-				
-			}
-		});
-		weiter.setBounds(22,400, 100, 30);
-		this.add(weiter);
 		
 		JButton anzeigen = new JButton("Anzeigen");
 		anzeigen.addActionListener(new ActionListener() {

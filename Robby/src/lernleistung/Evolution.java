@@ -8,22 +8,15 @@ import java.util.List;
 
 public class Evolution {
 	
-	public static boolean AUSGABE = false;
-	public static boolean FITNESSAUSGABE = true;
-	
 	public Zustandssammlung sammlung;
 	public LinkedList<Roboter> generation;
-	//public LinkedList<LinkedList<Roboter>> generationSammlung;
-	File dateiName, statistikDatei;
-	boolean schreibeStatistik;
-	//        + JFileChoose benutzen  Videos? SkypeLink 19.22.4
+	File dateiName;
 	
 	
 	
 	public Evolution()
 	{
 		sammlung = new Zustandssammlung();
-		//generationSammlung = new LinkedList<LinkedList<Roboter>>(); 
 		
 	}
 	
@@ -40,16 +33,8 @@ public class Evolution {
 		return new int[][] {kind1,kind2};
 	}
 	
-	public void mutation(int[] dna, double prozent) //kleinste Zahl 0.41
+	public void mutation(int[] dna, double prozent)
 	{
-//		int wiederholungen = (int)(sammlung.gibLaenge() * (prozent /100d));
-//		for(int i = 0; i< wiederholungen; i++)
-//		{
-//			int zufallPlatz = myRandom(0, sammlung.gibLaenge());
-//			int zufallGen = myRandom(1, 7);
-//			roboter[zufallPlatz] = zufallGen;
-//		}
-		
 		double wahrscheinlichkeit = prozent / 100d;
 		for(int i = 0; i < dna.length; i++)
 		{
@@ -60,7 +45,7 @@ public class Evolution {
 		}
 	}
 	
-	public void erstelleGeneration(int groesse)
+	public void erstelleGeneration(int groesse) //erste Generation
 	{
 		generation = new LinkedList<Roboter>();
 		for(int i = 0; i<groesse; i++)
@@ -68,34 +53,15 @@ public class Evolution {
 			generation.add(new Roboter());
 		}
 		LadenSpeichern.speichern(generation, dateiName);
-		//generationSammlung.add(generation);
 	}
 	
 	public void evolution(int generationGroesse, int generationen, int szenarien, double prozent)
 	{
-		if(schreibeStatistik)
-			LadenSpeichern.schreibenEinstellung(generationGroesse, generationen, szenarien, prozent, statistikDatei);
-		long begin = new Date().getTime();
 		erstelleGeneration(generationGroesse);
 		lebenSimulieren(generationGroesse, szenarien);
-		if(AUSGABE){
-			System.out.println("Anfang");
-			generationAusgeben();
-		}
 		for(int i = 0; i < generationen; i++)
 		{
 			lebenSimulieren(generationGroesse, szenarien);
-			if(FITNESSAUSGABE)
-			{
-//				int zaehler = 0;
-//				for(int z = 0; z < generation.size()/2; z++)
-//				{
-//					zaehler = zaehler + generation.get(z).gibFitness();
-//				}
-//				System.out.println(zaehler/(generation.size()/2));
-				
-				System.out.println(generation.getFirst().gibFitness());
-			}
 			LinkedList<Roboter> neueGeneration = new LinkedList<Roboter>();
 			List<Roboter> besten = generation.subList(0, generation.size()/2);
 			for(int j = 0; j < besten.size(); j++)
@@ -114,17 +80,8 @@ public class Evolution {
 			}
 			generation = neueGeneration;
 			LadenSpeichern.speichern(generation, dateiName);
-			//generationSammlung.add(neueGeneration);
 		}
 		lebenSimulieren(generationGroesse, szenarien);
-		if(AUSGABE){
-			System.out.println("Ende");
-			generationAusgeben();
-		}
-		if(schreibeStatistik){
-			long delta = new Date().getTime() - begin;
-			LadenSpeichern.speichernStatistik(generation,delta, statistikDatei);
-		}
 	}
 
 	private void lebenSimulieren(int generationGroesse, int szenarien) {
@@ -142,7 +99,6 @@ public class Evolution {
 	public LinkedList<Roboter> gibGeneration(int generation)
 	{
 		return LadenSpeichern.laden(dateiName, generation);
-		//return generationSammlung.get(generation);
 	}
 	
 	public void setzeFile(File file)
@@ -150,16 +106,6 @@ public class Evolution {
 		dateiName = file;
 	}
 	
-	public void setzeStatistik(File file)
-	{
-		statistikDatei = file;
-		schreibeStatistik = true;
-	}
-	
-	public void generationAusgeben(){
-		for(int i = 0; i < generation.size(); i++)
-			System.out.println(generation.get(i).gibGesamtFitness());
-	}
 	
 	public static int myRandom(int low, int high) {
 		return (int) (Math.random() * (high - low) + low);

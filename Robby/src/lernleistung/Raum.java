@@ -3,7 +3,6 @@ package lernleistung;
 public class Raum {
 
 	public int[][] koordinaten;
-	public static double random; 
 	
 	public Raum()
 	{
@@ -11,18 +10,6 @@ public class Raum {
 		verteileMuell();
 	}
 	
-	public static void main(String[] args) 
-	{
-		int[] verteilung = new int[101];
-		for(int i = 0; i < 1000000; i++)
-		{
-			Raum raum = new Raum();
-			verteilung[raum.zaehleMuell()]++;
-		}
-		
-		for(int v = 0; v< verteilung.length;v++)
-			System.out.println(v + ";" + verteilung[v]);
-	}
 	
 	public void verteileMuell()
 	{
@@ -36,21 +23,6 @@ public class Raum {
 		}
 	}
 	
-	public int zaehleMuell()
-	{
-		int zahl = 0;
-
-		for(int i = 0; i < 10; i ++)
-		{
-			for(int j = 0; j < 10; j ++)
-			{
-				if(this.istMuell(new Punkt(i,j)))
-					zahl++;
-			}
-		}
-		
-		return zahl;
-	}
 	
 	public boolean istMuell(Punkt punkt)
 	{
@@ -67,19 +39,6 @@ public class Raum {
 		else 
 			return true;
 		
-	}
-	
-	public void ausgabe()
-	{
-		for(int i= 0; i < 10; i++)
-		{
-			String Zeile = "";
-			for(int k= 0; k < 10; k++)
-			{
-				Zeile = Zeile + koordinaten[k][i];
-			}
-			System.out.println(Zeile);	
-		}
 	}
 	
 	public void muellAufsammeln(Punkt punkt)

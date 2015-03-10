@@ -7,7 +7,8 @@ import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 import java.util.Stack;
 
-public class Roboter  implements Comparable<Roboter>{
+public class Roboter  implements Comparable<Roboter>    //wie extends, um es sortierbar zu machen
+{
 	
 	private int ausrichtung;
 	private Punkt standort; 
@@ -46,13 +47,6 @@ public class Roboter  implements Comparable<Roboter>{
 		this.aufzeichnen = aufzeichnen;
 	}
 	
-//	public static void main(String[] args) 
-//	{
-//		Roboter robby = new Roboter();
-//		robby.ausgabeDNA();
-//		robby.leben();
-//	}
-	
 	public void dreheRechts()
 	{
 		if(ausrichtung == 3)
@@ -69,15 +63,6 @@ public class Roboter  implements Comparable<Roboter>{
 			ausrichtung--;
 	}
 	
-	public void umdrehen()
-	{
-		if(ausrichtung == 3)
-			ausrichtung = 1;
-		else if(ausrichtung == 2)
-			ausrichtung = 0;
-		else
-			ausrichtung= ausrichtung +2;
-	}
 	
 	public void geheEinenSchritt()
 	{
@@ -318,9 +303,9 @@ public class Roboter  implements Comparable<Roboter>{
 			stift.setColor(Color.BLACK);
 			
 			Stroke old = stift.getStroke();
-			stift.setStroke(new BasicStroke(3));
+			stift.setStroke(new BasicStroke(3));  //dicke Linie
 			int x = standort.getXKon()*50, y = standort.getYKon()*50;
-			stift.drawLine(x+5, y+5, x+45, y+45);
+			stift.drawLine(x+5, y+5, x+45, y+45);   //Zeichnung der Startposition
 			stift.drawLine(x+45, y+5, x+5, y+45);
 			stift.setStroke(old);
 		}
@@ -394,12 +379,7 @@ public class Roboter  implements Comparable<Roboter>{
 				fitness = fitness -1;
 			}
 		}
-//		else
-//		{
-//			umdrehen();
-//			if(aufzeichnen)
-//				System.out.println("umgedreht");
-//		}
+//		
 	}
 	
 	public int gibFitness()
@@ -412,7 +392,8 @@ public class Roboter  implements Comparable<Roboter>{
 		return gesamtFitness/zaehler;
 	}
 	
-	public void fitnessZuruecksetzen(){
+	public void fitnessZuruecksetzen()
+	{
 		gesamtFitness = 0;
 		fitness = 0;
 	}
@@ -439,7 +420,7 @@ public class Roboter  implements Comparable<Roboter>{
 	@Override
 	public int compareTo(Roboter o) {
 		// TODO Auto-generated method stub
-		return -gibGesamtFitness() + o.gibGesamtFitness();
+		return o.gibGesamtFitness()-gibGesamtFitness();
 	}
 
 }

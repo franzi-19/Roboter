@@ -15,16 +15,6 @@ public class SpielfeldAnzeige extends JPanel{
 	{
 
 	}
-
-//	public void createFrame() {
-//
-//		JFrame frame = new JFrame("Robby");
-//		frame.add(this);
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		frame.setSize(517, 540);
-//		frame.setLocationRelativeTo(null);
-//		frame.setVisible(true);
-//	}
 	
 	public void paintComponent(Graphics g) 
 	{
@@ -64,7 +54,6 @@ public class SpielfeldAnzeige extends JPanel{
 	public void setzeRoboter(Roboter r)
 	{
 		rob = r;
-//		JOptionPane.showMessageDialog(null, "Durchschnitt Fitness: "+r.gibGesamtFitness());
 		rob.setzeAufzeichnen(true);
 		rob.leben();
 		repaint();

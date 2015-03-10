@@ -16,15 +16,6 @@ public class LadenSpeichern {
 	static ObjectOutputStream output;
 	static File lastFile;
 	
-	public static LinkedList<int[]> generationInDNA(LinkedList<Roboter> roboter)
-	{
-		LinkedList<int[]> DNA = new LinkedList<int[]>();
-		for(int i = 0; i<roboter.size(); i++)
-		{
-			DNA.add(roboter.get(i).gibDNA());
-		}
-		return DNA;
-	}
 	
 	public static LinkedList<Roboter> DNAinGeneration(LinkedList<int[]> dna)
 	{
@@ -75,7 +66,7 @@ public class LadenSpeichern {
 		}
 	}
 	
-	public static LinkedList<Roboter> laden(File dateiName, int index)
+	public static LinkedList<Roboter> laden(File dateiName, int index) // index = generation
 	{
 		try
 		{
@@ -83,7 +74,7 @@ public class LadenSpeichern {
 			InputStreamReader isr = new InputStreamReader(fis);
 			BufferedReader reader = new BufferedReader(isr);
 			
-			for(int i = 1; i< index; i++)
+			for(int i = 1; i< index; i++)  //sucht die richtige Generation 
 				reader.readLine();
 			
 			String gen = reader.readLine();
@@ -92,18 +83,17 @@ public class LadenSpeichern {
 				reader.close();
 				return null;
 			}
-//			gen = gen.substring(2,gen.length()-2);
-			String[] DNAstrings = gen.split(";");
+			String[] DNAstrings = gen.split(";");  // ; trennt die dnas der Roboter von einander
 			
 			LinkedList<Roboter> ergebnis = new LinkedList<Roboter>();
 			
 			for(int i = 0; i < DNAstrings.length; i++)
 			{
-				String[] DNAteile = DNAstrings[i].split(",");
+				String[] DNAteile = DNAstrings[i].split(",");  //trennt einzelne dnateile von eonander
 				int[] DNA = new int[DNAteile.length];
 				for(int j = 0; j < DNA.length; j++)
 				{
-					DNA[j] = Integer.parseInt(DNAteile[j]);
+					DNA[j] = Integer.parseInt(DNAteile[j]); //string in int
 				}
 				ergebnis.add(new Roboter(DNA));
 			}
@@ -119,65 +109,5 @@ public class LadenSpeichern {
 		}
 		return null;
 	}
-	
-	public static void erstelleStatistikDatei(File file)
-	{
-		try
-		{
-			FileOutputStream fos = new FileOutputStream(file,true);
-			OutputStreamWriter osw = new OutputStreamWriter(fos,"utf-8");
-			BufferedWriter writer = new BufferedWriter(osw);
-			writer.write("Anfangsbevoelkerung;Generationen;Szenarien;Mutationsrate;DurchschnittsFittness;Zeit");
-			writer.newLine();
-			writer.close();
-			fos.close();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	public static void schreibenEinstellung(int anfang, int generation, int szenarien, double rate, File file)
-	{
-		try
-		{
-			FileOutputStream fos = new FileOutputStream(file,true);
-			OutputStreamWriter osw = new OutputStreamWriter(fos,"utf-8");
-			BufferedWriter writer = new BufferedWriter(osw);
-			writer.write(anfang + ";" + generation+ ";" + szenarien + ";" + rate + ";");
-			writer.close();
-			fos.close();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	public static void speichernStatistik(LinkedList<Roboter> generation,long delta, File file)
-	{
-		int summe = 0;
-		int i = 0;
-		for( ;i<generation.size() && i<20; i++)
-		{
-			summe = summe + generation.get(i).gibFitness();
-		}
-		double durchschnitt = summe /i;
-		try
-		{
-			FileOutputStream fos = new FileOutputStream(file,true);
-			OutputStreamWriter osw = new OutputStreamWriter(fos,"utf-8");
-			BufferedWriter writer = new BufferedWriter(osw);
-			writer.write(Double.toString(durchschnitt));
-			writer.write(";" + Long.toString(delta));
-			writer.newLine();
-			writer.close();
-			fos.close();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
 }
+	
