@@ -2,7 +2,7 @@ package lernleistung;
 
 public class Punkt {
 	
-	public int xKoordinaten, yKoordinaten;
+	private int xKoordinaten, yKoordinaten;
 
 	public Punkt(int x, int y)
 	{

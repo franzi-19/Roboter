@@ -7,14 +7,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.LinkedList;
 
 public class LadenSpeichern {
-
-	static ObjectOutputStream output;
-	static File lastFile;
 	
 	
 	public static LinkedList<Roboter> DNAinGeneration(LinkedList<int[]> dna)
@@ -74,7 +70,7 @@ public class LadenSpeichern {
 			InputStreamReader isr = new InputStreamReader(fis);
 			BufferedReader reader = new BufferedReader(isr);
 			
-			for(int i = 1; i< index; i++)  //sucht die richtige Generation 
+			for(int i = 1; i< index; i++)  //sucht die richtige, ausgewählte Generation 
 				reader.readLine();
 			
 			String gen = reader.readLine();
@@ -83,13 +79,13 @@ public class LadenSpeichern {
 				reader.close();
 				return null;
 			}
-			String[] DNAstrings = gen.split(";");  // ; trennt die dnas der Roboter von einander
+			String[] DNAstrings = gen.split(";");  //trennt die DNAs der Roboter von einander
 			
 			LinkedList<Roboter> ergebnis = new LinkedList<Roboter>();
 			
 			for(int i = 0; i < DNAstrings.length; i++)
 			{
-				String[] DNAteile = DNAstrings[i].split(",");  //trennt einzelne dnateile von eonander
+				String[] DNAteile = DNAstrings[i].split(",");  //trennt einzelne DNA - Teile von einander
 				int[] DNA = new int[DNAteile.length];
 				for(int j = 0; j < DNA.length; j++)
 				{

@@ -2,15 +2,14 @@ package lernleistung;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Evolution {
 	
-	public Zustandssammlung sammlung;
-	public LinkedList<Roboter> generation;
-	File dateiName;
+	private Zustandssammlung sammlung;
+	private LinkedList<Roboter> generation;
+	private File dateiName;
 	
 	
 	
@@ -58,7 +57,6 @@ public class Evolution {
 	public void evolution(int generationGroesse, int generationen, int szenarien, double prozent)
 	{
 		erstelleGeneration(generationGroesse);
-		lebenSimulieren(generationGroesse, szenarien);
 		for(int i = 0; i < generationen; i++)
 		{
 			lebenSimulieren(generationGroesse, szenarien);

@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class Zustandssammlung {
 	
-	public LinkedList<Integer> zustaende;
+	private LinkedList<Integer> zustaende;
 	
 	public Zustandssammlung()
 	{

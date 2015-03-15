@@ -7,11 +7,9 @@ import java.io.File;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
@@ -26,6 +24,7 @@ public class Oberflaeche  extends JFrame{
 	private JTextField textFieldMutationsWahrscheinlichkeit;
 	private SpielfeldAnzeige anzeige;
 	private Evolution evo;
+	private StatusOberflaeche status;
 
 	public Oberflaeche()
 	{
@@ -36,7 +35,7 @@ public class Oberflaeche  extends JFrame{
 		this.setLayout(null);
 		createComponents();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		status = new StatusOberflaeche();
 	}
 	
 	public static void main(String[] args) 
@@ -108,10 +107,20 @@ public class Oberflaeche  extends JFrame{
 				int state = fc.showSaveDialog(null);
 				 if ( state == JFileChooser.APPROVE_OPTION )
 				 {
-					 evo = new Evolution();
+					  evo = new Evolution();
 				      File file = fc.getSelectedFile();
 				      evo.setzeFile(file);
-				      evo.evolution(Integer.parseInt(textFieldAnfBevoelkerung.getText()), Integer.parseInt(textFieldGenerationen.getText()),Integer.parseInt(textFieldSzenarien.getText()), Double.parseDouble(textFieldMutationsWahrscheinlichkeit.getText()));
+				      status.zeige();
+				      status.schreibe("Evolution startet");
+				      try
+				      {
+				    	  evo.evolution(Integer.parseInt(textFieldAnfBevoelkerung.getText()), Integer.parseInt(textFieldGenerationen.getText()),Integer.parseInt(textFieldSzenarien.getText()), Double.parseDouble(textFieldMutationsWahrscheinlichkeit.getText()));
+				    	  status.schreibe("Evolution beendet");
+				      }
+				      catch(NumberFormatException n)
+				      {
+				    	  status.schreibe("Evolution konnte doch nicht gestartet werden. Fehlerhafte Eingabe!");
+				      }
 				 }
 			}
 		});
@@ -119,8 +128,8 @@ public class Oberflaeche  extends JFrame{
 		start.setBounds(22,300, 100, 30);
 		this.add(start);
 		
-		JButton stopp = new JButton("Generationen laden");
-		stopp.addActionListener(new ActionListener() {
+		JButton laden = new JButton("Generationen laden");
+		laden.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
 				File pref = new File("C:\\Users\\Franziska\\Documents\\Schule\\Informatik\\Lernleistung\\Generationen\\Daten");
@@ -143,36 +152,85 @@ public class Oberflaeche  extends JFrame{
 				    	  case "Gen": textFieldGenerationen.setText(number); break;
 				    	  case "Szen": textFieldSzenarien.setText(number); break;
 				    	  case "Mut": textFieldMutationsWahrscheinlichkeit.setText(number); break;
-				    	  default: System.out.println("Kann nicht erkennen: " + text);
+				    	  default: status.schreibe("Kann nicht erkennen: " + text);
 				    	  }
 				      }
-				      System.out.println(datei);
 				      evo.setzeFile(file);
+				      status.zeige();
+				      status.schreibe("Generationen wurden geladen");
 				 }
 			}
 		});
-		stopp.setBounds(0,350,145, 30);
-		this.add(stopp);
+		laden.setBounds(0,350,145, 30);
+		this.add(laden);
 		
 		
 		JButton anzeigen = new JButton("Anzeigen");
 		anzeigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				LinkedList<Roboter> gen = evo.gibGeneration(Integer.parseInt(textFieldAnzeigeGeneration.getText()));
-				if(gen == null)
+				try
 				{
-					JOptionPane.showMessageDialog(null, "Generation nicht vorhanden");
+					int hilfe = Integer.parseInt(textFieldAnzeigeGeneration.getText());
+					if(hilfe<0)
+						status.schreibe("negative Generationen existieren nicht");
+					else
+					{
+						LinkedList<Roboter> gen = evo.gibGeneration(hilfe);
+						if(gen == null)
+						{
+							status.schreibe("Generation nicht vorhanden");
+						}
+						else
+						{
+							Roboter rob = gen.getFirst();
+							anzeige.setzeRoboter(rob);
+							status.zeige();
+							status.schreibe("Fitness: "+ anzeige.gibFitness());
+							status.schreibeDNA(rob);
+						}
+					}
 				}
-				else
+				catch(NumberFormatException n)
 				{
-					Roboter rob = gen.getFirst();
-					anzeige.setzeRoboter(rob);
+					status.schreibe("Fehlerhafte Eingabe!");
 				}
 			}
 		});
 		anzeigen.setBounds(170,300, 100, 30);
 		this.add(anzeigen);
+		
+		JButton weiter = new JButton("weiter");
+		weiter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(!anzeige.weiter())
+					status.schreibe("Der Schritt konnte nicht angezeigt werden. (Kein Roboter geladen oder alle Schritte ausgeführt)");
+			}
+		});
+		weiter.setBounds(170,380, 100, 30);
+		this.add(weiter);
+		
+		JButton zurueck = new JButton("zurück");
+		zurueck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(!anzeige.zurueck())
+					status.schreibe("Der Schritt konnte nicht angezeigt werden. (Kein Roboter geladen oder noch kein Schritt ausgeführt)");
+			}
+		});
+		zurueck.setBounds(170,420, 100, 30);
+		this.add(zurueck);
+		
+		JButton ende = new JButton("zum Ende");
+		ende.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				anzeige.vorspulen();
+			}
+		});
+		ende.setBounds(170,460, 100, 30);
+		this.add(ende);
 		
 		JSeparator strich = new JSeparator(JSeparator.VERTICAL);
 		strich.setForeground(Color.BLACK);

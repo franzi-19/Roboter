@@ -2,7 +2,7 @@ package lernleistung;
 
 public class Raum {
 
-	public int[][] koordinaten;
+	private int[][] koordinaten;
 	
 	public Raum()
 	{
@@ -10,6 +10,10 @@ public class Raum {
 		verteileMuell();
 	}
 	
+	private Raum(int[][] raum)
+	{
+		koordinaten = raum;
+	}
 	
 	public void verteileMuell()
 	{
@@ -38,12 +42,24 @@ public class Raum {
 			return false;
 		else 
 			return true;
-		
 	}
 	
 	public void muellAufsammeln(Punkt punkt)
 	{
 		koordinaten[punkt.getXKon()][punkt.getYKon()] = 0;
+	}
+	
+	public Raum kopiere()
+	{
+		int[][] neuerRaum = new int[10][10];
+		for(int i = 0; i<10; i++)
+		{
+			for(int k = 0; k<10; k++)
+			{
+				neuerRaum[i][k] = koordinaten[i][k];
+			}
+		}
+		return new Raum(neuerRaum);
 	}
 	
 	public static int myRandom(int low, int high) {

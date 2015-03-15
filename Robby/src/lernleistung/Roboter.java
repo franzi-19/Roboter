@@ -1,10 +1,6 @@
 package lernleistung;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
-import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 import java.util.Stack;
 
 public class Roboter  implements Comparable<Roboter>    //wie extends, um es sortierbar zu machen
@@ -14,12 +10,12 @@ public class Roboter  implements Comparable<Roboter>    //wie extends, um es sor
 	private Punkt standort; 
 	private Zustandssammlung sammlung;
 	private Raum raum;
+	private Raum ursprungsraum;
 	private int zaehler;
 	private int[] dna;
 	private int fitness;
 	private int gesamtFitness;
-	private BufferedImage bild;
-	private Graphics2D stift;
+	private LinkedList<String> laufweg;
 	private boolean aufzeichnen;
 	
 	public Roboter()
@@ -28,11 +24,11 @@ public class Roboter  implements Comparable<Roboter>    //wie extends, um es sor
 		fitness = 0;
 		standort = new Punkt(myRandom(0, 10),myRandom(0, 10));
 		ausrichtung = 0;
-		raum = new Raum();
 		zaehler = 0;
 		dna = new int[sammlung.gibLaenge()];
 		dnaErstellen();
 		gesamtFitness = 0;
+		
 	}
 	
 	public Roboter(int[]DNA)
@@ -72,27 +68,25 @@ public class Roboter  implements Comparable<Roboter>    //wie extends, um es sor
 			fitness -= 5;
 			if(aufzeichnen)
 			{
-				Color alt = stift.getColor();
-				stift.setColor(Color.RED);
-				stift.fillOval(standort.getXKon()*50 +10, standort.getYKon()*50+10, 30, 30);
-				stift.setColor(alt);
+				laufweg.add("Wand;" + standort.getXKon()+ " "+ standort.getYKon() + ";" + neu.getXKon()+ " "+ neu.getYKon());
+				//stift.fillOval(standort.getXKon()*50 +10, standort.getYKon()*50+10, 30, 30); rot
 			}
 		}
 		else
 		{
 			if(aufzeichnen)
-				stift.drawLine(standort.getXKon()*50+25, standort.getYKon()*50+25, neu.getXKon()*50+25, neu.getYKon()*50+25);
+				laufweg.add("Schritt;" + standort.getXKon()+ " "+ standort.getYKon() + ";" + neu.getXKon()+ " " + neu.getYKon());
+
 			standort = neu;
 		}
 	}
 	
 	public void geheZufaellig() 
 	{
-		Color alt = null;
 		if(aufzeichnen)
 		{
-			alt = stift.getColor();
-			stift.setColor(Color.BLUE);
+			laufweg.add("Anfang Zufall");
+			//stift.setColor(Color.BLUE);
 		}
 			
 		boolean wiederholen = true;
@@ -108,7 +102,7 @@ public class Roboter  implements Comparable<Roboter>    //wie extends, um es sor
 			}
 			zufall = myRandom(0, 5);
 			for(int i = 0; i< zufall; i++)
-			{;
+			{
 				geheEinenSchritt();
 			}
 			zufall = myRandom(0, 5);
@@ -117,7 +111,7 @@ public class Roboter  implements Comparable<Roboter>    //wie extends, um es sor
 		}
 		if(aufzeichnen)
 		{
-			stift.setColor(alt);
+			laufweg.add("Ende Zufall");
 		}
 	}
 	
@@ -298,25 +292,17 @@ public class Roboter  implements Comparable<Roboter>    //wie extends, um es sor
 		zaehler++;
 		if(aufzeichnen)
 		{
-			bild = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
-			stift = bild.createGraphics();
-			stift.setColor(Color.BLACK);
-			
-			Stroke old = stift.getStroke();
-			stift.setStroke(new BasicStroke(3));  //dicke Linie
-			int x = standort.getXKon()*50, y = standort.getYKon()*50;
-			stift.drawLine(x+5, y+5, x+45, y+45);   //Zeichnung der Startposition
-			stift.drawLine(x+45, y+5, x+5, y+45);
-			stift.setStroke(old);
+			laufweg = new LinkedList<String>();
+			laufweg.add("Start;" + standort.getXKon() + " " + standort.getYKon());
 		}
 		fitness = 0;
 		raum = new Raum();
+		ursprungsraum = raum.kopiere();
 		int action = 0;
 		int umgebung = 0;
 		while(action++ <300)  //darf 300 aktionen ausführen
 		{
 			umgebung = berechneZustand();
-//			System.out.println("Umgebung: " + umgebung);
 			fuehreAktionAus(dna[umgebung]);
 		}
 		gesamtFitness = gesamtFitness + gibFitness();
@@ -327,29 +313,20 @@ public class Roboter  implements Comparable<Roboter>    //wie extends, um es sor
 		if(action == 1)
 		{
 			dreheLinks();
-			if(aufzeichnen)
-				System.out.println("gehe links");
 			geheEinenSchritt();
 		}
 		else if(action == 2)
 		{
 			dreheRechts();
-			if(aufzeichnen)
-				System.out.println("gehe rechts");
 			geheEinenSchritt();
-
 		}
 		else if(action == 3 || action == 6)
 		{
 			geheEinenSchritt();
-			if(aufzeichnen)
-				System.out.println("einSchritt");
 		}
 		else if(action == 4)
 		{
 			geheZufaellig();
-			if(aufzeichnen)
-				System.out.println("Zufällig");
 		}
 		else if(action == 5)
 		{
@@ -358,11 +335,7 @@ public class Roboter  implements Comparable<Roboter>    //wie extends, um es sor
 				raum.muellAufsammeln(standort);
 				if(aufzeichnen)
 				{
-					Color alt = stift.getColor();
-					stift.setColor(Color.GREEN);
-					stift.fillOval(standort.getXKon()*50 +10, standort.getYKon()*50+10, 30, 30);
-					stift.setColor(alt);
-					System.out.println("Müll aufgehoben");
+					laufweg.add("Muell;" + standort.getXKon() + " " + standort.getYKon());
 				}
 				fitness = fitness +10;
 			}
@@ -370,11 +343,7 @@ public class Roboter  implements Comparable<Roboter>    //wie extends, um es sor
 			{
 				if(aufzeichnen)
 				{
-					Color alt = stift.getColor();
-					stift.setColor(Color.RED);
-					stift.fillOval(standort.getXKon()*50 +18, standort.getYKon()*50+18, 14, 14);
-					stift.setColor(alt);
-					System.out.println("gebückt");
+					laufweg.add("gebueckt;" + standort.getXKon() + " " + standort.getYKon());
 				}
 				fitness = fitness -1;
 			}
@@ -408,19 +377,25 @@ public class Roboter  implements Comparable<Roboter>    //wie extends, um es sor
 		return raum;
 	}
 	
-	public BufferedImage gibBild()
+	public Raum gibUrsprungsraum()
 	{
-		return bild;
+		return ursprungsraum;
 	}
+	
+	public LinkedList<String> gibLaufweg()
+	{
+		return laufweg;
+	}
+	
 	// low inklusiv, high exklusiv
 	public static int myRandom(int low, int high) {
 		return (int) (Math.random() * (high - low) + low);
 	}
 
 	@Override
-	public int compareTo(Roboter o) {
+	public int compareTo(Roboter rob) {
 		// TODO Auto-generated method stub
-		return o.gibGesamtFitness()-gibGesamtFitness();
+		return rob.gibGesamtFitness()-gibGesamtFitness();
 	}
 
 }
