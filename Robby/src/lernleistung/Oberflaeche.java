@@ -36,6 +36,7 @@ public class Oberflaeche  extends JFrame{
 		createComponents();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		status = new StatusOberflaeche();
+		this.setMaximizedBounds(this.getBounds());
 	}
 	
 	public static void main(String[] args) 
@@ -141,12 +142,18 @@ public class Oberflaeche  extends JFrame{
 				 {
 				      File file = fc.getSelectedFile();
 				      String datei = file.getName();
-				      datei = datei.replaceAll("\\..*| ", ""); //Löscht alle Punkte und Zeichen dahinter und alle Leerzeichen
+				      datei = datei.replaceAll(" ", ""); //Löscht  alle Leerzeichen
+				      for(int i = datei.length() - 1; i >= 0; i--){ //Löscht die Dateiendung (Sucht den ersten Punkt von hinten)
+				    	  if(datei.charAt(i) == '.'){
+				    		  datei = datei.substring(0,i);
+				    		  break;
+				    	  }
+				      }
 				      String[] props = datei.split(",");
 				      for(String p : props)
 				      {
-				    	  String number = p.replaceAll("\\D", ""); //Löscht alle Buchstaben
-				    	  String text = p.replaceAll("\\d", ""); //Löscht alle Ziffern
+				    	  String number = p.replaceAll("[^0123456789\\.]", ""); //Löscht alle nicht-Ziffern außer Punkte (also zum Beispiel Buchstaben)
+				    	  String text = p.replaceAll("\\d|\\.", ""); //Löscht alle Ziffern und Punkte
 				    	  switch(text){
 				    	  case "Bev": textFieldAnfBevoelkerung.setText(number); break;
 				    	  case "Gen": textFieldGenerationen.setText(number); break;
@@ -167,6 +174,8 @@ public class Oberflaeche  extends JFrame{
 		
 		JButton anzeigen = new JButton("Anzeigen");
 		anzeigen.addActionListener(new ActionListener() {
+			boolean aufrufen = true;
+			
 			public void actionPerformed(ActionEvent e) 
 			{
 				try
@@ -183,6 +192,13 @@ public class Oberflaeche  extends JFrame{
 						}
 						else
 						{
+							if(aufrufen)
+							{
+								status.schreibe("Beschreibung: ");
+								String text = "Auf der rechten Seite wird nun der Laufweg des ausgewählten Roboters angezeigt. Mit den Knöpfen 'weiter', 'zurück' und 'zum Ende' kann der Weg schrittweise oder ganz gezeigt werden. Dabei stellen die grünen Quadrate die Müllhaufen, das schwarze X die Startposition und das graue Quadrat die aktuelle Position des Roboters da. Wenn nun der Laufweg angezeigt wird, verdeutlichen die schwarzen Striche den zurückgelegten Weg. Falls der Weg blau ist, bewegt sich der Roboter zufällig. Bei den grünen Kreisen hat der Roboter Müll aufgehoben und die Roten bedeuten, dass sich der Roboter unnötig gebückt hat. Wenn der Roboter gegen eine Wand gelaufen ist, dann erscheit ein Strich Richtung Wand.";
+								status.schreibe(text);
+								aufrufen = false;
+							}
 							Roboter rob = gen.getFirst();
 							anzeige.setzeRoboter(rob);
 							status.zeige();

@@ -347,8 +347,7 @@ public class Roboter  implements Comparable<Roboter>    //wie extends, um es sor
 				}
 				fitness = fitness -1;
 			}
-		}
-//		
+		}		
 	}
 	
 	public int gibFitness()
