@@ -59,7 +59,7 @@ public class Evolution {
 		erstelleGeneration(generationGroesse);
 		for(int i = 0; i < generationen; i++)
 		{
-			lebenSimulieren(generationGroesse, szenarien);
+			lebenSimulieren(szenarien);
 			LinkedList<Roboter> neueGeneration = new LinkedList<Roboter>();
 			List<Roboter> besten = generation.subList(0, generation.size()/2);
 			for(int j = 0; j < besten.size(); j++)
@@ -79,11 +79,11 @@ public class Evolution {
 			generation = neueGeneration;
 			LadenSpeichern.speichern(generation, dateiName);
 		}
-		lebenSimulieren(generationGroesse, szenarien);
+		lebenSimulieren(szenarien);
 	}
 
-	private void lebenSimulieren(int generationGroesse, int szenarien) {
-		for(int j = 0; j < generationGroesse; j++)
+	private void lebenSimulieren(int szenarien) {
+		for(int j = 0; j < generation.size(); j++)
 		{
 			generation.get(j).fitnessZuruecksetzen();
 			for(int k = 0; k<szenarien; k++)

@@ -18,8 +18,8 @@ public class Zustandssammlung {
 		erstelleZustandsliste(0, 1);
 	}
 	
-	public void erstelleZustandsliste(int aktuellerZustand, int position) //vorne=1; rechts=10; hinten=100; links=1000; unten=10000
-	{
+	public void erstelleZustandsliste(int aktuellerZustand, int position)
+	{      //vorne=1; rechts=10; hinten=100; links=1000; unten=10000
 
 		for(int i = 1; i<4; i++)
 		{
