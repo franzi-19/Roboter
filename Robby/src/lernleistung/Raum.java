@@ -30,18 +30,12 @@ public class Raum {
 	
 	public boolean istMuell(Punkt punkt)
 	{
-		if(koordinaten[punkt.getXKon()][punkt.getYKon()] == 1)
-			return true;
-		else
-			return false;
+		return koordinaten[punkt.getXKon()][punkt.getYKon()] == 1;
 	}
 	
 	public boolean istWand(Punkt punkt)
 	{
-		if(punkt.getXKon()>-1 && punkt.getXKon()<10 && punkt.getYKon()>-1 && punkt.getYKon()<10)
-			return false;
-		else 
-			return true;
+		return punkt.getXKon()>-1 && punkt.getXKon()<10 && punkt.getYKon()>-1 && punkt.getYKon()<10;
 	}
 	
 	public void muellAufsammeln(Punkt punkt)
@@ -62,7 +56,7 @@ public class Raum {
 		return new Raum(neuerRaum);
 	}
 	
-	public static int myRandom(int low, int high) {
+	private static int myRandom(int low, int high) {
 		return (int) (Math.random() * (high - low) + low);
 	}
 }

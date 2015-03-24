@@ -32,9 +32,6 @@ public class Punkt {
 	
 	public boolean istGleich(Punkt pkt)
 	{
-		if(getXKon() == pkt.getXKon() && getYKon() == pkt.getYKon())
-			return true;
-		else 
-			return false;
+		return getXKon() == pkt.getXKon() && getYKon() == pkt.getYKon();
 	}
 }

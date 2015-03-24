@@ -12,7 +12,6 @@ public class Evolution {
 	private File dateiName;
 	
 	
-	
 	public Evolution()
 	{
 		sammlung = new Zustandssammlung();		
@@ -81,7 +80,8 @@ public class Evolution {
 		}
 	}
 
-	private void lebenSimulieren(int szenarien) {
+	private void lebenSimulieren(int szenarien) 
+	{
 		for(int j = 0; j < generation.size(); j++)
 		{
 			generation.get(j).fitnessZuruecksetzen();
@@ -104,7 +104,7 @@ public class Evolution {
 	}
 	
 	
-	public static int myRandom(int low, int high) {
+	private static int myRandom(int low, int high) {
 		return (int) (Math.random() * (high - low) + low);
 	}
 }

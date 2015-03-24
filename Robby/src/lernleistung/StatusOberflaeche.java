@@ -7,9 +7,6 @@ import javax.swing.text.DefaultCaret;
 
 public class StatusOberflaeche extends JFrame
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JTextArea feld;
 	private JScrollPane scrollPane;

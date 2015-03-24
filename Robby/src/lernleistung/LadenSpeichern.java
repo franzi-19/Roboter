@@ -12,17 +12,6 @@ import java.util.LinkedList;
 
 public class LadenSpeichern {
 	
-	
-	public static LinkedList<Roboter> DNAinGeneration(LinkedList<int[]> dna)
-	{
-		LinkedList<Roboter> generation = new LinkedList<Roboter>();
-		for(int i = 0; i< dna.size(); i++)
-		{
-			generation.add(new Roboter(dna.get(i)));
-		}
-		return generation;
-	}
-	
 	public static String DNAinString(int[] DNA)
 	{
 		String ergebnis = "";

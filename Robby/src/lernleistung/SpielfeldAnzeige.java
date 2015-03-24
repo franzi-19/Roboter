@@ -15,11 +15,6 @@ public class SpielfeldAnzeige extends JPanel{
 	private Roboter rob;
 	private int index;
 	
-	public SpielfeldAnzeige()
-	{
-		
-	}
-	
 	public void paintComponent(Graphics g) 
 	{
 		super.paintComponent(g);
@@ -138,8 +133,6 @@ public class SpielfeldAnzeige extends JPanel{
 			{
 				System.out.println(teile[0]);
 			}
-			
-			
 		}
 		stift.setColor(Color.gray);
 		stift.drawRect(rx + 20, ry + 20, 10, 10);
@@ -196,7 +189,5 @@ public class SpielfeldAnzeige extends JPanel{
 	public int gibFitness()
 	{
 		return rob.gibFitness();
-	}
-	
-	
+	}	
 }

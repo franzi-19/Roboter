@@ -28,15 +28,15 @@ public class Oberflaeche  extends JFrame{
 
 	public Oberflaeche()
 	{
-		super();
+		super("Robby, der Roboter");
 		anzeige = new SpielfeldAnzeige();
 		evo = new Evolution();
-		this.setBounds(0, 0, 807, 540);
-		this.setLayout(null);
+		setBounds(0, 0, 807, 540);
+		setLayout(null);
 		createComponents();
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		status = new StatusOberflaeche();
-		this.setMaximizedBounds(this.getBounds());
+		setMaximizedBounds(this.getBounds());
 	}
 	
 	public static void main(String[] args) 

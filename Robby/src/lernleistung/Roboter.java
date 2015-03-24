@@ -3,7 +3,7 @@ package lernleistung;
 import java.util.LinkedList;
 import java.util.Stack;
 
-public class Roboter  implements Comparable<Roboter>    //wie extends, um es sortierbar zu machen
+public class Roboter implements Comparable<Roboter>    //um die Generation sortierbar zu machen
 {
 	
 	private int ausrichtung;
@@ -387,13 +387,14 @@ public class Roboter  implements Comparable<Roboter>    //wie extends, um es sor
 	}
 	
 	// low inklusiv, high exklusiv
-	public static int myRandom(int low, int high) {
+	private static int myRandom(int low, int high) 
+	{
 		return (int) (Math.random() * (high - low) + low);
 	}
 
 	@Override
-	public int compareTo(Roboter rob) {
-		// TODO Auto-generated method stub
+	public int compareTo(Roboter rob) 
+	{
 		return rob.gibGesamtFitness()-gibGesamtFitness();
 	}
 
