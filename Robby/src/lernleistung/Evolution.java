@@ -15,8 +15,7 @@ public class Evolution {
 	
 	public Evolution()
 	{
-		sammlung = new Zustandssammlung();
-		
+		sammlung = new Zustandssammlung();		
 	}
 	
 	
@@ -57,9 +56,9 @@ public class Evolution {
 	public void evolution(int generationGroesse, int generationen, int szenarien, double prozent)
 	{
 		erstelleGeneration(generationGroesse);
+		lebenSimulieren(szenarien);
 		for(int i = 0; i < generationen; i++)
 		{
-			lebenSimulieren(szenarien);
 			LinkedList<Roboter> neueGeneration = new LinkedList<Roboter>();
 			List<Roboter> besten = generation.subList(0, generation.size()/2);
 			for(int j = 0; j < besten.size(); j++)
@@ -77,9 +76,9 @@ public class Evolution {
 				neueGeneration.add(kind2);
 			}
 			generation = neueGeneration;
+			lebenSimulieren(szenarien);
 			LadenSpeichern.speichern(generation, dateiName);
 		}
-		lebenSimulieren(szenarien);
 	}
 
 	private void lebenSimulieren(int szenarien) {

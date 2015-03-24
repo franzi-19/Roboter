@@ -143,8 +143,10 @@ public class Oberflaeche  extends JFrame{
 				      File file = fc.getSelectedFile();
 				      String datei = file.getName();
 				      datei = datei.replaceAll(" ", ""); //Löscht  alle Leerzeichen
-				      for(int i = datei.length() - 1; i >= 0; i--){ //Löscht die Dateiendung (Sucht den ersten Punkt von hinten)
-				    	  if(datei.charAt(i) == '.'){
+				      for(int i = datei.length() - 1; i >= 0; i--)
+				      { //Löscht die Dateiendung (Sucht den ersten Punkt von hinten)
+				    	  if(datei.charAt(i) == '.')
+				    	  {
 				    		  datei = datei.substring(0,i);
 				    		  break;
 				    	  }
