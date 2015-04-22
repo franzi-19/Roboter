@@ -244,7 +244,11 @@ public class Oberflaeche  extends JFrame{
 		ende.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				anzeige.vorspulen();
+				if(!anzeige.weiter())
+					status.schreibe("Es konnte nicht vorgespult werden. Vielleicht wurde keine Generation geladen.");
+				else
+					anzeige.vorspulen();
+					
 			}
 		});
 		ende.setBounds(170,460, 100, 30);

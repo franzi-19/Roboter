@@ -30,12 +30,20 @@ public class Raum {
 	
 	public boolean istMuell(Punkt punkt)
 	{
+		if(punkt.getXKon() <0 || punkt.getYKon()<0)
+		{
+			return false;
+		}
+		else if(punkt.getXKon() >9 || punkt.getYKon()>9)
+		{
+			return false;
+		}
 		return koordinaten[punkt.getXKon()][punkt.getYKon()] == 1;
 	}
 	
 	public boolean istWand(Punkt punkt)
 	{
-		return punkt.getXKon()>-1 && punkt.getXKon()<10 && punkt.getYKon()>-1 && punkt.getYKon()<10;
+		return !(punkt.getXKon()>-1 && punkt.getXKon()<10 && punkt.getYKon()>-1 && punkt.getYKon()<10);
 	}
 	
 	public void muellAufsammeln(Punkt punkt)
